@@ -1,5 +1,5 @@
 #include "global.h"
-#include "rtc.h"
+#include "faketime.h"
 #include "overworld.h"
 #include "random.h"
 #include "event_data.h"

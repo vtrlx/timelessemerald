@@ -3,12 +3,12 @@
 #include "clock.h"
 #include "decompress.h"
 #include "event_data.h"
+#include "faketime.h"
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "main.h"
 #include "menu.h"
 #include "palette.h"
-#include "rtc.h"
 #include "scanline_effect.h"
 #include "sound.h"
 #include "strings.h"
@@ -860,7 +860,7 @@ static void Task_SetClock_HandleConfirmInput(u8 taskId)
 
 static void Task_SetClock_Confirmed(u8 taskId)
 {
-    RtcInitLocalTimeOffset(gTasks[taskId].tHours, gTasks[taskId].tMinutes);
+    FakeTimeReset(gTasks[taskId].tHours, gTasks[taskId].tMinutes);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     gTasks[taskId].func = Task_SetClock_Exit;
 }
@@ -1006,7 +1006,6 @@ static void UpdateClockPeriod(u8 taskId, u8 direction)
 
 static void InitClockWithRtc(u8 taskId)
 {
-    RtcCalcLocalTime();
     gTasks[taskId].tHours = gLocalTime.hours;
     gTasks[taskId].tMinutes = gLocalTime.minutes;
     gTasks[taskId].tMinuteHandAngle = gTasks[taskId].tMinutes * 6;

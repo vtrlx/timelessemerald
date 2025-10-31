@@ -14,7 +14,7 @@
 #include "pokeblock.h"
 #include "dewford_trend.h"
 #include "berry.h"
-#include "rtc.h"
+#include "faketime.h"
 #include "easy_chat.h"
 #include "event_data.h"
 #include "money.h"
@@ -148,9 +148,6 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
-    if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
-        RtcReset();
-
     gDifferentSaveFile = TRUE;
     gSaveBlock2Ptr->encryptionKey = 0;
     ZeroPlayerPartyMons();

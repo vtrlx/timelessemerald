@@ -6,7 +6,7 @@
 #include "librfu.h"
 #include "m4a.h"
 #include "bg.h"
-#include "rtc.h"
+#include "faketime.h"
 #include "scanline_effect.h"
 #include "overworld.h"
 #include "play_time.h"
@@ -101,7 +101,6 @@ void AgbMain(void)
     m4aSoundInit();
     EnableVCountIntrAtLine150();
     InitRFU();
-    RtcInit();
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
@@ -161,6 +160,10 @@ void AgbMain(void)
                 gLinkTransferringData = FALSE;
             }
         }
+
+        // Ticks the in-game time by one second every 4th frame.
+        if (gMain.vblankCounter1 % 4 == 0);
+            FakeTimeTick();
 
         PlayTimeCounter_Update();
         MapMusicMain();
@@ -433,7 +436,6 @@ void DoSoftReset(void)
     DmaStop(1);
     DmaStop(2);
     DmaStop(3);
-    SiiRtcProtect();
     SoftReset(RESET_ALL);
 }
 

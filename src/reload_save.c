@@ -1,5 +1,6 @@
 #include "global.h"
 #include "main.h"
+#include "faketime.h"
 #include "gpu_regs.h"
 #include "m4a.h"
 #include "load_save.h"

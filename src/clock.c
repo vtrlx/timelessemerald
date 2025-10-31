@@ -2,12 +2,12 @@
 #include "berry.h"
 #include "dewford_trend.h"
 #include "event_data.h"
+#include "faketime.h"
 #include "field_specials.h"
 #include "field_weather.h"
 #include "main.h"
 #include "lottery_corner.h"
 #include "overworld.h"
-#include "rtc.h"
 #include "time_events.h"
 #include "tv.h"
 #include "wallclock.h"
@@ -18,7 +18,6 @@ static void UpdatePerMinute(struct Time *localTime);
 static void InitTimeBasedEvents(void)
 {
     FlagSet(FLAG_SYS_CLOCK_SET);
-    RtcCalcLocalTime();
     gSaveBlock2Ptr->lastBerryTreeUpdate = gLocalTime;
     VarSet(VAR_DAYS, gLocalTime.days);
 }
@@ -27,7 +26,6 @@ void DoTimeBasedEvents(void)
 {
     if (FlagGet(FLAG_SYS_CLOCK_SET) && !InPokemonCenter())
     {
-        RtcCalcLocalTime();
         UpdatePerDay(&gLocalTime);
         UpdatePerMinute(&gLocalTime);
     }

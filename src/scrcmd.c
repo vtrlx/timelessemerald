@@ -11,6 +11,7 @@
 #include "decoration.h"
 #include "decoration_inventory.h"
 #include "event_data.h"
+#include "faketime.h"
 #include "field_door.h"
 #include "field_effect.h"
 #include "event_object_lock.h"
@@ -34,7 +35,6 @@
 #include "random.h"
 #include "overworld.h"
 #include "rotating_tile_puzzle.h"
-#include "rtc.h"
 #include "script.h"
 #include "script_menu.h"
 #include "script_movement.h"
@@ -683,7 +683,7 @@ bool8 ScrCmd_initclock(struct ScriptContext *ctx)
     u8 hour = VarGet(ScriptReadHalfword(ctx));
     u8 minute = VarGet(ScriptReadHalfword(ctx));
 
-    RtcInitLocalTimeOffset(hour, minute);
+    FakeTimeReset(hour, minute);
     return FALSE;
 }
 
@@ -695,7 +695,6 @@ bool8 ScrCmd_dotimebasedevents(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gettime(struct ScriptContext *ctx)
 {
-    RtcCalcLocalTime();
     gSpecialVar_0x8000 = gLocalTime.hours;
     gSpecialVar_0x8001 = gLocalTime.minutes;
     gSpecialVar_0x8002 = gLocalTime.seconds;

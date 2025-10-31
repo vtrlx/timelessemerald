@@ -12,6 +12,7 @@
 #include "data.h"
 #include "event_data.h"
 #include "evolution_scene.h"
+#include "faketime.h"
 #include "field_specials.h"
 #include "item.h"
 #include "link.h"
@@ -27,7 +28,6 @@
 #include "pokemon_storage_system.h"
 #include "random.h"
 #include "recorded_battle.h"
-#include "rtc.h"
 #include "sound.h"
 #include "string_util.h"
 #include "strings.h"
@@ -5523,12 +5523,10 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_DAY:
-                RtcCalcLocalTime();
                 if (gLocalTime.hours >= DAY_EVO_HOUR_BEGIN && gLocalTime.hours < DAY_EVO_HOUR_END && friendship >= FRIENDSHIP_EVO_THRESHOLD)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_NIGHT:
-                RtcCalcLocalTime();
                 if (gLocalTime.hours >= NIGHT_EVO_HOUR_BEGIN && gLocalTime.hours < NIGHT_EVO_HOUR_END && friendship >= FRIENDSHIP_EVO_THRESHOLD)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;

@@ -7,6 +7,7 @@
 #include "data.h"
 #include "decompress.h"
 #include "event_data.h"
+#include "faketime.h"
 #include "field_effect.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -24,7 +25,6 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "random.h"
-#include "rtc.h"
 #include "save.h"
 #include "scanline_effect.h"
 #include "sound.h"
@@ -177,7 +177,6 @@ static u8 sBirchSpeechMainTaskId;
 
 static u32 InitMainMenu(bool8);
 static void Task_MainMenuCheckSaveFile(u8);
-static void Task_MainMenuCheckBattery(u8);
 static void Task_WaitForSaveFileErrorWindow(u8);
 static void CreateMainMenuErrorWindow(const u8 *);
 static void ClearMainMenuWindowTilemap(const struct WindowTemplate *);
@@ -644,7 +643,7 @@ static void Task_MainMenuCheckSaveFile(u8 taskId)
                 tMenuType = HAS_SAVED_GAME;
                 if (IsMysteryGiftEnabled())
                     tMenuType++;
-                gTasks[taskId].func = Task_MainMenuCheckBattery;
+                gTasks[taskId].func = Task_DisplayMainMenu;
                 break;
             case SAVE_STATUS_CORRUPT:
                 CreateMainMenuErrorWindow(gText_SaveFileErased);
@@ -661,7 +660,7 @@ static void Task_MainMenuCheckSaveFile(u8 taskId)
             case SAVE_STATUS_EMPTY:
             default:
                 tMenuType = HAS_NO_SAVED_GAME;
-                gTasks[taskId].func = Task_MainMenuCheckBattery;
+                gTasks[taskId].func = Task_DisplayMainMenu;
                 break;
             case SAVE_STATUS_NO_FLASH:
                 CreateMainMenuErrorWindow(gJPText_No1MSubCircuit);
@@ -698,31 +697,7 @@ static void Task_WaitForSaveFileErrorWindow(u8 taskId)
     {
         ClearWindowTilemap(7);
         ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_MainMenuCheckBattery;
-    }
-}
-
-static void Task_MainMenuCheckBattery(u8 taskId)
-{
-    if (!gPaletteFade.active)
-    {
-        SetGpuReg(REG_OFFSET_WIN0H, 0);
-        SetGpuReg(REG_OFFSET_WIN0V, 0);
-        SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG0 | WININ_WIN0_OBJ);
-        SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG0 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        SetGpuReg(REG_OFFSET_BLDY, 7);
-
-        if (!(RtcGetErrorStatus() & RTC_ERR_FLAG_MASK))
-        {
-            gTasks[taskId].func = Task_DisplayMainMenu;
-        }
-        else
-        {
-            CreateMainMenuErrorWindow(gText_BatteryRunDry);
-            gTasks[taskId].func = Task_WaitForBatteryDryErrorWindow;
-        }
+        gTasks[taskId].func = Task_DisplayMainMenu;
     }
 }
 

@@ -6,6 +6,7 @@
 #include "data.h"
 #include "event_data.h"
 #include "event_object_movement.h"
+#include "faketime.h"
 #include "field_player_avatar.h"
 #include "main.h"
 #include "match_call.h"
@@ -17,7 +18,6 @@
 #include "pokemon.h"
 #include "random.h"
 #include "region_map.h"
-#include "rtc.h"
 #include "script.h"
 #include "script_movement.h"
 #include "sound.h"
@@ -1028,8 +1028,7 @@ extern const u8 gBirchDexRatingText_OnANationwideBasis[];
 
 void InitMatchCallCounters(void)
 {
-    RtcCalcLocalTime();
-    sMatchCallState.minutes = GetCurrentTotalMinutes(&gLocalTime) + 10;
+    sMatchCallState.minutes = GetCurrentTotalMinutes(&gLocalTime) + 480;
     sMatchCallState.stepCounter = 0;
 }
 
@@ -1041,9 +1040,8 @@ static u32 GetCurrentTotalMinutes(struct Time *time)
 static bool32 UpdateMatchCallMinutesCounter(void)
 {
     int curMinutes;
-    RtcCalcLocalTime();
     curMinutes = GetCurrentTotalMinutes(&gLocalTime);
-    if (sMatchCallState.minutes > curMinutes || curMinutes - sMatchCallState.minutes > 9)
+    if (sMatchCallState.minutes > curMinutes || curMinutes - sMatchCallState.minutes > 479)
     {
         sMatchCallState.minutes = curMinutes;
         return TRUE;
@@ -1884,7 +1882,7 @@ static bool32 ShouldTrainerRequestBattle(int matchCallId)
     if (GetNumOwnedBadges() < 5)
         return FALSE;
 
-    dayCount = RtcGetLocalDayCount();
+    dayCount = gLocalTime.days;
     otId = GetTrainerId(gSaveBlock2Ptr->playerTrainerId) & 0xFFFF;
 
     dewfordRand = gSaveBlock1Ptr->dewfordTrends[0].rand;

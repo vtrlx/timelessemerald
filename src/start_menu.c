@@ -7,6 +7,7 @@
 #include "event_object_movement.h"
 #include "event_object_lock.h"
 #include "event_scripts.h"
+#include "faketime.h"
 #include "fieldmap.h"
 #include "field_effect.h"
 #include "field_player_avatar.h"
@@ -876,6 +877,7 @@ static bool8 BattlePyramidRetireCallback(void)
 
 static void InitSave(void)
 {
+    FakeTimeSave();
     SaveMapView();
     sSaveDialogCallback = SaveConfirmSaveCallback;
     sSavingComplete = FALSE;
@@ -1437,3 +1439,4 @@ void AppendToList(u8 *list, u8 *pos, u8 newEntry)
     list[*pos] = newEntry;
     (*pos)++;
 }
+

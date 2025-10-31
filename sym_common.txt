@@ -8,7 +8,7 @@
 	.include "link.o"
 	.include "AgbRfu_LinkManager.o"
 	.include "link_rfu_2.o"
-	.include "rtc.o"
+	.include "faketime.o"
 	.include "battle_main.o"
 	.include "random.o"
 	.include "load_save.o"

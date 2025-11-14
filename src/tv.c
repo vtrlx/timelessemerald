@@ -1575,7 +1575,7 @@ void StartMassOutbreak(void)
     gSaveBlock1Ptr->outbreakPokemonMoves[3] = show->massOutbreak.moves[3];
     gSaveBlock1Ptr->outbreakUnused3 = show->massOutbreak.unused3;
     gSaveBlock1Ptr->outbreakPokemonProbability = show->massOutbreak.probability;
-    gSaveBlock1Ptr->outbreakDaysLeft = 2;
+    gSaveBlock1Ptr->outbreakDaysLeft = 7;
 }
 
 void PutLilycoveContestLadyShowOnTheAir(void)
@@ -1679,7 +1679,7 @@ static void TryStartRandomMassOutbreak(void)
                 show->massOutbreak.unused4 = 0;
                 show->massOutbreak.probability = 50;
                 show->massOutbreak.unused5 = 0;
-                show->massOutbreak.daysLeft = 1;
+                show->massOutbreak.daysLeft = 7;
                 StorePlayerIdInNormalShow(show);
                 show->massOutbreak.language = gGameLanguage;
             }
@@ -2627,19 +2627,22 @@ void DoPokeNews(void)
     }
     else
     {
-        if (gSaveBlock1Ptr->pokeNews[i].dayCountdown == 0)
+        if (gSaveBlock1Ptr->pokeNews[i].dayCountdown <= POKENEWS_COUNTDOWN / 2)
         {
-            // News event is occurring, make comment depending on how much time is left
             gSaveBlock1Ptr->pokeNews[i].state = POKENEWS_STATE_ACTIVE;
-            if (gLocalTime.hours < 20)
-                ShowFieldMessage(sPokeNewsTextGroup_Ongoing[gSaveBlock1Ptr->pokeNews[i].kind]);
-            else
+            if (gSaveBlock1Ptr->pokeNews[i].dayCountdown == 0)
+            {
                 ShowFieldMessage(sPokeNewsTextGroup_Ending[gSaveBlock1Ptr->pokeNews[i].kind]);
+            }
+            else
+            {
+                ShowFieldMessage(sPokeNewsTextGroup_Ongoing[gSaveBlock1Ptr->pokeNews[i].kind]);
+            }
         }
         else
         {
             // News event is upcoming, make comment about countdown to event
-            u16 dayCountdown = gSaveBlock1Ptr->pokeNews[i].dayCountdown;
+            u16 dayCountdown = gSaveBlock1Ptr->pokeNews[i].dayCountdown - POKENEWS_COUNTDOWN / 2;
             ConvertIntToDecimalStringN(gStringVar1, dayCountdown, STR_CONV_MODE_LEFT_ALIGN, 1);
 
             // Mark as inactive so the countdown TV airing doesn't repeat
@@ -3619,7 +3622,7 @@ static bool8 TryMixOutbreakTVShow(TVShow *dest, TVShow *src, u8 idx)
     src->common.srcTrainerIdHi = linkTrainerId >> 8;
     *dest = *src;
     dest->common.active = TRUE;
-    dest->massOutbreak.daysLeft = 1;
+    dest->massOutbreak.daysLeft = 3;
     return TRUE;
 }
 

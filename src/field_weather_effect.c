@@ -14,6 +14,9 @@
 #include "trig.h"
 #include "gpu_regs.h"
 
+// Airlifted from src/tv.c
+#define rbernoulli(num, den) BernoulliTrial(0xFFFF * (num) / (den))
+
 EWRAM_DATA static u8 sCurrentAbnormalWeather = 0;
 EWRAM_DATA static u16 sUnusedWeatherRelated = 0;
 
@@ -2619,11 +2622,25 @@ static u8 TranslateWeatherNum(u8 weather)
     }
 }
 
+// Airlifted from src/tv.c
+static bool8 BernoulliTrial(u16 ratio)
+{
+    if (Random() <= ratio)
+        return FALSE;
+
+    return TRUE;
+}
+
 void UpdateWeatherPerDay(u16 increment)
 {
-    u16 weatherStage = gSaveBlock1Ptr->weatherCycleStage + increment;
-    weatherStage %= WEATHER_CYCLE_LENGTH;
-    gSaveBlock1Ptr->weatherCycleStage = weatherStage;
+    u16 weatherStage;
+    for (; increment > 0; increment--) {
+        if (rbernoulli(1, 3))
+            continue;
+        weatherStage = gSaveBlock1Ptr->weatherCycleStage + 1;
+        weatherStage %= WEATHER_CYCLE_LENGTH;
+        gSaveBlock1Ptr->weatherCycleStage = weatherStage;
+    }
 }
 
 static void UpdateRainCounter(u8 newWeather, u8 oldWeather)

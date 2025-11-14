@@ -93,7 +93,7 @@ void UpdateDewfordTrendPerDay(u16 days)
 
     if (days != 0)
     {
-        u32 clockRand = days * 5;
+        u32 clockRand = days;
 
         for (i = 0; i < SAVED_TRENDS_COUNT; i++)
         {

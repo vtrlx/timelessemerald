@@ -18,6 +18,7 @@ static void UpdatePerMinute(struct Time *localTime);
 static void InitTimeBasedEvents(void)
 {
     FlagSet(FLAG_SYS_CLOCK_SET);
+    EnableResetRTC();
     gSaveBlock2Ptr->lastBerryTreeUpdate = gLocalTime;
     VarSet(VAR_DAYS, gLocalTime.days);
 }

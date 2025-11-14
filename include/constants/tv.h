@@ -14,7 +14,7 @@
 
 // Number of days to count down until the news event occurs.
 // Nothing is aired on TV the first day
-#define POKENEWS_COUNTDOWN 4
+#define POKENEWS_COUNTDOWN 8
 
 // TV shows are categorized as being in one of 3 groups
 // - TVGROUP_NORMAL, TV shows that can appear without Record Mixing

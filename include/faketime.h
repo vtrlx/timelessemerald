@@ -13,6 +13,7 @@ void FakeTimeReset(s8 hours, s8 minutes);
 void FakeTimeTick(void);
 void FakeTimeAdvanceDayNight(void);
 void FixTime(struct Time *time);
+void ClearTime(struct Time *time);
 void AddTimes(struct Time *result, struct Time *t1, struct Time *t2);
 void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2);
 

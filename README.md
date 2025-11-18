@@ -22,4 +22,6 @@ This mod is designed to be a drop-in replacement for Pokémon Emerald Version. T
 
 ## Installing
 
-Follow the instructions in the [PRET repository](https://github.com/pret/pokeemerald/blob/master/INSTALL.md)
+Check out the [Releases](https://github.com/vtrlx/timelessemerald/releases) page to download patches. These patches must be applied to an unmodified English-language ROM of Pokémon Emerald.
+
+To build the ROM yourself, follow the instructions in the [PRET repository](https://github.com/pret/pokeemerald/blob/master/INSTALL.md).
